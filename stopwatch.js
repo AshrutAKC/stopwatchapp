@@ -21,26 +21,26 @@ export default function App() {
   const startTimeRef = useRef(0);
   const previousTimeRef = useRef(0);
 
-  // --- Core Logic ---
 
-  // 1. Start
+
+// 1. Start
   const handleStart = () => {
     if (!isRunning) {
       startTimeRef.current = Date.now();
-      previousTimeRef.current = time; // Resume from where we left off
+      previousTimeRef.current = time; // Resume from where it was let off
      
       intervalRef.current = setInterval(() => {
         const now = Date.now();
-        // Calculate precise time difference to avoid drift
+        // Calculating precise time difference to avoid drift
         const timePassed = now - startTimeRef.current + previousTimeRef.current;
         setTime(timePassed);
-      }, 10); // Update every 10ms
+      }, 10); // Update every 10ms(Low Latency)
      
       setIsRunning(true);
     }
   };
 
-  // 2. Pause
+  // 2. For Pauses
   const handlePause = () => {
     if (isRunning) {
       clearInterval(intervalRef.current);
@@ -48,7 +48,7 @@ export default function App() {
     }
   };
 
-  // 3. Stop (Reset)
+  // 3. For Stops (Reset)
   const handleStop = () => {
     clearInterval(intervalRef.current);
     setIsRunning(false);
@@ -56,11 +56,10 @@ export default function App() {
     previousTimeRef.current = 0;
   };
 
-  // 4. Lap
+  // 4. For Laps
   const handleLap = () => {
-    // Determine lap time (difference between current time and last lap, or start)
-    // For simplicity in this UI, we just snapshot the total time,
-    // but you can calculate split times if preferred.
+    // Determine lap time (difference between current time and last lap, or start), snapshot total time
+    
     const newLap = {
       id: Date.now().toString(), // Unique ID
       time: time,
@@ -75,12 +74,12 @@ export default function App() {
     setLaps([]);
   };
 
-  // 6. Remove Individual Lap (The "Extra Impressed" Feature)
+  // 6. For Remove Individual Laps
   const handleRemoveLap = (idToRemove) => {
     setLaps((currentLaps) => currentLaps.filter(lap => lap.id !== idToRemove));
   };
 
-  // --- Helper: Format Time (MM:SS:ms) ---
+  //Format Time (MM:SS:ms) ---
   const formatTime = (ms) => {
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
@@ -93,8 +92,7 @@ export default function App() {
     return `${minStr}:${secStr}.${centiStr}`;
   };
 
-  // --- Render Components ---
-
+  //Rendering Components (Thank god for AI Design)
   const renderLapItem = ({ item }) => (
     <View style={styles.lapItem}>
       <Text style={styles.lapText}>Lap {item.lapNumber}</Text>
@@ -308,3 +306,4 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
 });
+
